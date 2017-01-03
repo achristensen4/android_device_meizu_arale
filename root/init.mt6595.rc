@@ -1,18 +1,18 @@
 # MTK platform .rc configure
 
 import init.project.rc
-#import /FWUpgradeInit.rc
+import /FWUpgradeInit.rc
 import init.xlog.rc
 import init.aee.rc
 import init.ssd.rc
 import init.modem.rc
-#import init.volte.rc
-#import init.mal.rc
-#import init.wfca.rc
-#import init.epdg.rc
-#import init.no_ssd.rc
-#import init.ssd_nomuser.rc
-#import init.fon.rc
+import init.volte.rc
+import init.mal.rc
+import init.wfca.rc
+import init.epdg.rc
+import init.no_ssd.rc
+import init.ssd_nomuser.rc
+import init.fon.rc
 
 
 on early-boot
@@ -58,9 +58,9 @@ on init
 # mount different fs start
 
 #permissions for accdet calibration
-#    chown system system /sys/class/meizu/accdet_calibration/cmd
-#    chown system system /sys/class/meizu/accdet_calibration/data
-#    chown system system /sys/class/meizu/accdet_calibration/state
+chown system system /sys/class/meizu/accdet_calibration/cmd
+chown system system /sys/class/meizu/accdet_calibration/data
+chown system system /sys/class/meizu/accdet_calibration/state
 
 on charger
     mount ext4 /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/system /system ro wait
@@ -101,11 +101,11 @@ on fs
     exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/frp
     write /proc/bootprof "INIT:Mount_END"
 
-# mount different fs end
+mount different fs end
 
-#on fs
+on fs
 
-#   mount iso9660 loop@/system/etc/iAmCdRom.iso /mnt/cd-rom ro
+mount iso9660 loop@/system/etc/iAmCdRom.iso /mnt/cd-rom ro
 
 on post-fs
 
@@ -161,7 +161,7 @@ on post-fs
     chown radio system /proc/spm_fs/mcdi
 
     #change partition permission
-    #exec /system/etc/partition_permission.sh
+    exec /system/etc/partition_permission.sh
 
     # change owner
     chown system system /proc/bootprof
@@ -223,7 +223,7 @@ on post-fs-data
     chmod 444 /etc/radvd/radvd.conf
 
     # Touch Panel
-    #chmod 0664 /dev/touch
+    chmod 0664 /dev/touch
     chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
     chown root diag /sys/module/tpd_setting/parameters/tpd_em_debounce_time
     chown root diag /sys/module/tpd_setting/parameters/tpd_mode
@@ -252,10 +252,10 @@ on post-fs-data
     chmod 0660 /dev/rtc0
 
     # M4U
-    #insmod /system/lib/modules/m4u.ko
-    #mknod /dev/M4U_device c 188 0
-    #chmod 0444 /dev/M4U_device
-    #chown system media /dev/M4U_device
+    insmod /system/lib/modules/m4u.ko
+    mknod /dev/M4U_device c 188 0
+    chmod 0444 /dev/M4U_device
+    chown system media /dev/M4U_device
 
     #set mlock limit to infinate (for m4u operation)
     setrlimit 8 -1 -1
@@ -375,8 +375,8 @@ on post-fs-data
     chown system media /dev/Vcodec
 
     #MJC
-    #insmod /system/lib/modules/mjc_kernel_driver.ko
-    #mknod /dev/MJC c 168 0
+    insmod /system/lib/modules/mjc_kernel_driver.ko
+    mknod /dev/MJC c 168 0
     chmod 0660 /dev/MJC
     chown system media /dev/MJC
 
@@ -555,8 +555,8 @@ on post-fs-data
     chown system media /dev/mtk_sched
 
     # For 6572 Mali400MP1 GPU kernel driver
-    #chmod 666 /dev/ump
-    #chown system.graphics /dev/ump
+    chmod 666 /dev/ump
+    chown system.graphics /dev/ump
 
     chmod 666 /dev/mali
     chown system graphics /dev/mali
@@ -602,9 +602,9 @@ on post-fs-data
 
 on boot
 
-    #chown root /remount.sh
-    #chmod 700 /remount.sh
-    #exec /remount.sh
+    chown root /remount.sh
+    chmod 700 /remount.sh
+    exec /remount.sh
 
     # xlog
     start xlogboot
@@ -773,12 +773,10 @@ on property:vold.decrypt=trigger_shutdown_framework
 
 service stop_modem /system/bin/md_ctrl 0
     class main
-    disabled
     oneshot
 
 service start_modem /system/bin/md_ctrl 1
     class main
-    disabled
     oneshot
 
 ## mtk printk uart controller
@@ -799,7 +797,6 @@ service met_log_d /system/bin/met_log_d
 service bugreport /system/bin/dumpstate -d -p -B \
         -o /data/data/com.android.shell/files/bugreports/bugreport
     class main
-    disabled
     oneshot
 
 # SGX init
@@ -825,7 +822,6 @@ service atci_service /system/bin/atci_service
     socket atci-service stream 660 radio system
     socket atci-serv-fw stream 660 radio system
     user root
-    disabled
     group radio system
 
 service atcid-daemon-u /system/bin/atcid
@@ -833,7 +829,6 @@ service atcid-daemon-u /system/bin/atcid
     socket adb_atci_socket stream 660 radio system
     user system
     group radio system media inet wifi net_admin
-    disabled
     oneshot
 
 service atcid-daemon-e /system/bin/atcid
@@ -841,7 +836,6 @@ service atcid-daemon-e /system/bin/atcid
     socket adb_atci_socket stream 660 radio system
     user root
     group radio system
-    disabled
     oneshot
 
 on property:ro.build.type=eng
@@ -852,7 +846,6 @@ service audio-daemon /system/bin/audiocmdservice_atci
     class main
     socket atci-audio stream 660 root system
     user root
-    disabled
     oneshot
 
 service pq /system/bin/pq
@@ -862,15 +855,14 @@ service pq /system/bin/pq
     oneshot
 
 # Y U NO DOCS
-#service aal /system/bin/aal
-#    class main
-#    user system
-#    group system graphics
+service aal /system/bin/aal
+class main
+user system
+group system graphics
 
 # FOTA upgrade
 service rbfota /system/bin/fota1
     class main
-    disabled
     oneshot
 
 #
@@ -900,11 +892,10 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     -O/data/misc/wifi/sockets -g@android:wpa_wlan0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
+    user wifi
+    group wifi inet keystore
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
-    disabled
     oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant \
@@ -913,21 +904,19 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     -O/data/misc/wifi/sockets -g@android:wpa_wlan0
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
+    user wifi
+    group wifi inet keystore
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
-    disabled
     oneshot
 
 service ap_daemon /system/bin/wpa_supplicant \
     -iap0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1 -dd
     #   we will start as root and wpa_supplicant will switch to user wifi
     #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
+    user wifi
+    group wifi inet keystore
     class main
-    disabled
     oneshot
 
 #
@@ -940,57 +929,48 @@ service dhcpcd_bt-pan /system/bin/dhcpcd -BK -dd
     class main
     user root
     group net_admin net_raw
-    disabled
     oneshot
 
 service dhcpcd_wlan0 /system/bin/dhcpcd -BK -dd
     class main
     user root
     group net_admin net_raw
-    disabled
     oneshot
 
 service dhcpcd_p2p /system/bin/dhcpcd -BK -dd
     class main
     user root
     group net_admin net_raw
-    disabled
     oneshot
 
 service iprenew_wlan0 /system/bin/dhcpcd -n
     class main
     user dhcp
     group net_admin net_raw
-    disabled
     oneshot
 
 service iprenew_p2p /system/bin/dhcpcd -n
     class main
     user dhcp
     group net_admin net_raw
-    disabled
     oneshot
 
 service dhcp_inform /system/bin/dhcpcd -s -BK -A
     class main
     user root
     group system radio dhcp net_admin net_raw
-    disabled
     oneshot
 
 service dhcpv6_inform /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6cSIP.conf" -Dfi
     class main
     user root
     group system radio dhcp net_admin net_raw
-    disabled
     oneshot
 
 service dhcp6cDNS_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6cDNS.conf" -Df wlan0
-    disabled
     oneshot
 
 service dhcp6c_wlan0 /system/bin/dhcp6c -c "/etc/wide-dhcpv6/dhcp6c.conf" -Df wlan0
-    disabled
     oneshot
 
 on property:service.dhcp6c_wlan0.enable=0
@@ -1028,7 +1008,6 @@ on property:service.dhcp6c_wlan0.enable=1
 service pppoe_wlan0 /system/bin/launchpppoe
     user root
     group radio cache inet misc
-    disabled
     oneshot
 
 on property:service.pppoe_wlan0.enable=0
@@ -1054,13 +1033,11 @@ service vtservice /system/bin/vtservice
     socket soc_vt_svc dgram 660 radio system
     user root
     group camera graphics media sdcard_rw radio sdcard_r media_rw
-    ioprio rt 4
 
 service cmmb /system/bin/cmmbsp
     class main
     user system
     group system audio camera graphics inet net_bt net_bt_admin net_bw_acct media
-    ioprio rt 4
 
 service enableswap /system/bin/sh /enableswap.sh
     class core
@@ -1071,7 +1048,6 @@ service matv /system/bin/matv
     class main
     user system
     group system sdcard_rw media
-    ioprio rt 4
 
 service mtkGD /system/bin/mtkGD
     class main
@@ -1079,23 +1055,22 @@ service mtkGD /system/bin/mtkGD
     group system
 
 # non-existent even on stock Flyme
-#service dbus /system/bin/dbus-daemon --system --nofork
-#    class main
-#    socket dbus stream 660 bluetooth bluetooth
-#    user bluetooth
-#    group bluetooth net_bt_admin
+service dbus /system/bin/dbus-daemon --system --nofork
+class main
+socket dbus stream 660 bluetooth bluetooth
+user bluetooth
+group bluetooth net_bt_admin
 #
-#service bluetoothd /system/bin/bluetoothd -n
-#    class main
-#    socket bluetooth stream 660 bluetooth bluetooth
-#    socket dbus_bluetooth stream 660 bluetooth bluetooth
-#    # init.rc does not yet support applying capabilities, so run as root and
+service bluetoothd /system/bin/bluetoothd -n
+class main
+socket bluetooth stream 660 bluetooth bluetooth
+socket dbus_bluetooth stream 660 bluetooth bluetooth
+# init.rc does not yet support applying capabilities, so run as root and
 #    # let bluetoothd drop uid to bluetooth with the right linux capabilities
-#    group bluetooth net_bt_admin misc
-#    disabled
+group bluetooth net_bt_admin misc
 
 service mtkbt /system/bin/mtkbt
-    class late_start
+    class main
     socket bt.int.adp dgram 660 bluetooth net_bt
     socket bt.a2dp.stream dgram 660 bluetooth net_bt
     user bluetooth
@@ -1136,13 +1111,12 @@ service MPED /system/xbin/MPED
 service ipod /system/bin/ipod
     user root
     group root
-    disabled
 
 # disable mtk logging
-#service extmdlogger /system/bin/extmdlogger
-#    class main
-#    user shell
-#    group shell system radio sdcard_rw inet sdcard_r media_rw
+service extmdlogger /system/bin/extmdlogger
+class main
+user shell
+group shell system radio sdcard_rw inet sdcard_r media_rw
 
 service GoogleOtaAgent /system/bin/GoogleOtaBinder
     class main
@@ -1150,47 +1124,46 @@ service GoogleOtaAgent /system/bin/GoogleOtaBinder
     group system
 
 # disable mtk logging
-#service mdlogger /system/bin/mdlogger
-#    class main
-#    user shell
-#    group shell system radio sdcard_rw inet sdcard_r media_rw
-#    disabled
-#    oneshot
+service mdlogger /system/bin/mdlogger
+class main
+user shell
+group shell system radio sdcard_rw inet sdcard_r media_rw
+oneshot
+
 #
-#service dualmdlogger /system/bin/dualmdlogger
-#    class main
-#    user shell
-#    group shell system radio sdcard_rw inet sdcard_r media_rw
-#    disabled
-#    oneshot
+service dualmdlogger /system/bin/dualmdlogger
+class main
+user shell
+group shell system radio sdcard_rw inet sdcard_r media_rw
+oneshot
+
 #
-#service emdlogger1 /system/bin/emdlogger1
-#    class main
-#    user shell
-#    group system shell radio sdcard_rw inet sdcard_r media_rw
-#    disabled
-#    oneshot
+service emdlogger1 /system/bin/emdlogger1
+class main
+user shell
+group system shell radio sdcard_rw inet sdcard_r media_rw
+oneshot
+
 #
-#service emdlogger2 /system/bin/emdlogger2
-#    class main
-#    user shell
-#    group system shell radio sdcard_rw inet sdcard_r media_rw
-#    disabled
-#    oneshot
+service emdlogger2 /system/bin/emdlogger2
+class main
+user shell
+group system shell radio sdcard_rw inet sdcard_r media_rw
+oneshot
+
 #
-#service emdlogger5 /system/bin/emdlogger5
-#    class main
-#    user shell
-#    group system shell radio sdcard_rw inet sdcard_r media_rw
-#    disabled
-#    oneshot
+service emdlogger5 /system/bin/emdlogger5
+class main
+user shell
+group system shell radio sdcard_rw inet sdcard_r media_rw
+oneshot
+
 #
-#service emdlogger6 /system/bin/emdlogger6
-#    class main
-#    user shell
-#    group system shell radio sdcard_rw inet sdcard_r media_rw
-#    disabled
-#    oneshot
+service emdlogger6 /system/bin/emdlogger6
+class main
+user shell
+group system shell radio sdcard_rw inet sdcard_r media_rw
+oneshot
 
 #
 #sensor service (begin)
@@ -1201,96 +1174,80 @@ service msensord /system/bin/msensord
     oneshot
 
 service s62xd /system/bin/s62xd
-    disabled
     user compass
     group system
     class main
 service ami304d /system/bin/ami304d
     user system
     group system
-    disabled
     class main
 
 service memsicd /system/bin/memsicd
-    disabled
     user system
     group system
     class main
 
 service memsicd3416x /system/bin/memsicd3416x
-    disabled
     user system
     group system
     class main
 
 service akmd8975 /system/bin/akmd8975
-    disabled
     user system
     group system
     class main
 
 service akmd8963 /system/bin/akmd8963
-    disabled
     user system
     group system
     class main
 
 service istd8303  /system/bin/istd8303 
-    disabled
     user system
     group system
     class main
 
 service akmd09911 /system/bin/akmd09911
-    disabled
     user system
     group system
     class main
 
 service bmm050d /system/bin/bmm050d
-    disabled
     user system
     group system
     class main
 
 service bmm056d /system/bin/bmm056d
-    disabled
     user system
     group system
     class main
 
 service mc6420d /system/bin/mc6420d
-    disabled
     user system
     group system
     class main
 
 service qmc5983d /system/bin/qmc5983d
-    disabled
     user system
     group system
     class main
 
 service orientationd /system/bin/orientationd
-    disabled
     user system
     group system input
     class main
 
 service AcdApiDaemon /system/bin/AcdApiDaemon
-    disabled
     user system
     group system
     class main
 
 service geomagneticd /system/bin/geomagneticd
-    disabled
     user system
     group system input
     class main
 
 service mc64xxd /system/bin/mc64xxd
-    disabled
     user system
     group system
     class main
@@ -1308,23 +1265,25 @@ service mpud6050 /system/bin/mpud6050
 #
 #emsvr service (start)
 #
-#on property:ro.build.type=eng
-#    start emsvr
+on property:ro.build.type=eng
+start emsvr
+
 #
-#on property:ro.build.type=user
-#    start emsvr_user
+on property:ro.build.type=user
+start emsvr_user
 #
-#on property:ro.build.type=userdebug
-#    start emsvr_user
+
+on property:ro.build.type=userdebug
+start emsvr_user
 #
-#service emsvr_user /system/bin/em_svr
-#    disabled
-#    user system
-#    group system radio diag
+
+service emsvr_user /system/bin/em_svr
+user system
+group system radio diag
 #
-#service emsvr /system/bin/em_svr
-#    disabled
-#    user root
+
+service emsvr /system/bin/em_svr
+user root
 
 #
 #emsvr service (end)
@@ -1333,7 +1292,6 @@ service mpud6050 /system/bin/mpud6050
 service shutdown /system/bin/shutdown
     user root
     group root
-    disabled
 
 service NvRAMAgent /system/bin/nvram_agent_binder
     class main
@@ -1347,10 +1305,10 @@ service thermal_manager /system/bin/thermal_manager
 
 # this repeatedly crashes due to incompatible libnetutils or something,
 # disable for now.
-#service thermal /system/bin/thermal
-#    class main
-#    user system
-#    group system
+service thermal /system/bin/thermal
+class main
+user system
+group system
 
 service thermald /system/bin/thermald
     class main
@@ -1380,10 +1338,10 @@ service batterywarning /system/bin/batterywarning
     user shell
     group shell
 
-#service BGW /system/xbin/BGW
-#   user system
-#   group gps system radio
-#   class main
+service BGW /system/xbin/BGW
+user system
+group gps system radio
+class main
 
 service MtkCodecService /system/bin/MtkCodecService
     class main
@@ -1413,5 +1371,4 @@ service proj-dev-setup /system/bin/proj-dev-setup
     user root
     group root
     class main
-    disabled
     oneshot
