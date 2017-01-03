@@ -10,7 +10,7 @@ persist.mtk.aee.aed=on
 ro.sf.lcd_density=480
 ro.opengles.version=196608
 # seems dirty region is not supported by gpu according to logcat
-debug.hwui.render_dirty_regions=false
+debug.hwui.render_dirty_regions=true
 ro.hwui.texture_cache_size=48
 ro.hwui.layer_cache_size=32
 ro.hwui.r_buffer_cache_size=8
@@ -36,7 +36,7 @@ ro.mediatek.wlan.wsc=1
 ro.mediatek.wlan.p2p=1
 mediatek.wlan.ctia=0
 
-persist.mtk.wcn.combo.chipid=-1
+persist.mtk.wcn.combo.chipid=0
 service.wcn.driver.ready=no
 
 mediatek.wlan.chip=MT6630
@@ -71,7 +71,7 @@ ril.radiooff.poweroffMD=0
 
 ro.telephony.sim.count=1
 ro.telephony.ril_class=MediaTekRIL
-ro.telephony.ril.config=fakeiccid
+ro.telephony.ril.config=
 
 ro.mediatek.gemini_support=false
 ro.gemini.smart_sim_switch=false
@@ -86,7 +86,7 @@ ro.mtk_lte_support=1
 ro.operator.optr=CUST
 
 persist.radio.default.sim=0
-persist.radio.multisim.config=ss
+persist.radio.multisim.config=
 persist.sys.memopt.switch=1
 persist.md.perm.checked=to_upgrade
 persist.gemini.sim_num=1
@@ -94,16 +94,16 @@ persist.gemini.sim_num=1
 bgw.current3gband=0
 
 # VoLTE
-#ro.mtk_ims_support=1
-#ro.mtk.volte.enable=1
-#ro.mtk_volte_support=1
-#persist.dbg.volte_avail_ovr=1
-#ro.mtk_wfc_support=1
-#persist.dbg.wfc_avail_ovr=1
-#ro.mtk_vilte_support=1
-#ro.mtk_vilte_ut_support=1
-#persist.dbg.vt_avail_ovr=1
-#ro.mtk_epdg_support=1
+ro.mtk_ims_support=1
+ro.mtk.volte.enable=1
+ro.mtk_volte_support=1
+persist.dbg.volte_avail_ovr=1
+ro.mtk_wfc_support=1
+persist.dbg.wfc_avail_ovr=1
+ro.mtk_vilte_support=1
+ro.mtk_vilte_ut_support=1
+persist.dbg.vt_avail_ovr=1
+ro.mtk_epdg_support=1
 ro.mtk_md_sbp_custom_value=1
 
 
@@ -123,17 +123,17 @@ sys.ipo.pwrdncap=2
 
 
 # begin unrefined build properties
-#ro.zygote.preload.enable=0
+ro.zygote.preload.enable=0
 
 ro.kernel.zio=38,108,105,16
-#ro.kernel.qemu=1
-#ro.kernel.qemu.gles=0
-#ro.boot.selinux=disable
+ro.kernel.qemu=0
+ro.kernel.qemu.gles=0
+ro.boot.selinux=enable
 #
 ro.btstack=blueangel
 ro.sf.hwrotation=0
 drm.service.enabled=true
-fmradio.driver.enable=0
+fmradio.driver.enable=1
 
 
 #
@@ -164,7 +164,7 @@ ro.mtk_widevine_drm_l3_support=1
 ro.mtk_eap_sim_aka=1
 ro.mtk_audio_ape_support=1
 ro.mtk_flv_playback_support=1
-ro.mtk_fd_force_rel_support=1
+ro.mtk_fd_force_rel_support=0
 ro.mtk_wmv_playback_support=1
 ro.mtk_send_rr_support=1
 ro.mtk_default_data_off=1
@@ -199,4 +199,4 @@ ro.mtk_bg_power_saving_support=1
 ro.mtk_bg_power_saving_ui=1
 ro.have_aee_feature=1
 ro.mtk_voice_extension_support=1
-wfd.dummy.enable=1
+wfd.dummy.enable=0
