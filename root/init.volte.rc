@@ -26,7 +26,6 @@ service volte_ua /system/bin/volte_ua
     user system
     group system log inet radio
     oneshot
-    disabled
 
 service volte_stack /system/bin/volte_stack
     class core
@@ -34,7 +33,6 @@ service volte_stack /system/bin/volte_stack
     user root
     group system log inet radio
     oneshot
-    disabled
 
 service volte_imcb /system/bin/volte_imcb
     class core
@@ -44,7 +42,6 @@ service volte_imcb /system/bin/volte_imcb
     user system
     group system log inet radio
     oneshot
-    disabled
 
 #
 # VoLTE related services (End)
