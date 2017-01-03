@@ -25,19 +25,14 @@ service atci_service /system/bin/atci_service
 	socket atci-service stream 660 radio system 
 	socket atci-serv-fw stream 660 radio system 
 	user root 
-        disabled
 	group radio system                         
 service atcid-daemon-u /system/bin/atcid
 	user system
 	group radio system media
-	disabled
-	oneshot
 
 service atcid-daemon-e /system/bin/atcid
 	user root
 	group radio system
-	disabled
-	oneshot
 
 on early_property:ro.build.type=eng
 start atci_service
@@ -47,12 +42,9 @@ service audio-daemon /system/bin/audiocmdservice_atci
     socket atci-audio stream 660 media system
     user media
     group nvram media system sdcard_rw
-    disabled
-    oneshot
 
 service fuse_usbotg /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbotg /storage/usbotg
-    class late_start
-    disabled
+    class main
 
 #
 # Connectivity related services (Begin)
@@ -62,7 +54,6 @@ service wmt_loader /system/bin/wmt_loader
 	class core
 	user root
 	group root
-	oneshot
 
 service 66xx_launcher /system/bin/6620_launcher -m 4 -p /system/etc/firmware/
     user system
@@ -87,8 +78,8 @@ on init
 # TouchSense Player Service -- now minimally working without blob!
 service openimmvibed /system/bin/openimmvibed
     class main
-    #user root
-    #group root
+    user root
+    group root
     user system
     group system
     oneshot
@@ -100,7 +91,6 @@ service immvibed /system/bin/immvibed -p 99 -u 1000
     user root
     group root
     oneshot
-#@}
 
 # Proximity sensor calibration as a Service!
 service ps_calibrate /system/bin/meizupshelper c
